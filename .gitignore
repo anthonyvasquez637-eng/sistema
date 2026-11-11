@@ -1,0 +1,25 @@
+# Dependencias y entornos
+node_modules/
+.env
+*.log
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de IDE y editores
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Salidas de compilación / base de datos backups
+*.bak
+*.mdf
+*.ldf
+bin/
+obj/
+dist/

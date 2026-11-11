@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoDrive - Sistema de Alquiler de Vehículos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Lateral Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand-container">
+      <div class="brand-icon">AD</div>
+      <div class="brand-text">
+        <h1>AutoDrive</h1>
+        <span>Rent-a-Car Enterprise</span>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li>
+        <a class="nav-link active" data-view="view-dashboard">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" data-view="view-fleet">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+          Flota Vehicular
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" data-view="view-contracts">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Contratos & Rentas
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" data-view="view-clients">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          Clientes
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div>AutoDrive DB v1.0</div>
+      <div>UASD - Grupo 5</div>
+    </div>
+  </aside>
+
+  <!-- Main Content Viewport -->
+  <div class="main-wrapper">
+    <header class="top-navbar">
+      <div class="page-title">
+        <h2 id="current-page-title">Panel Principal y Resumen Operativo</h2>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-secondary btn-sm" onclick="openModal('modal-client')">+ Registrar Cliente</button>
+        <div class="user-badge">
+          <div class="avatar">JV</div>
+          <span style="font-size: 0.88rem; font-weight: 600;">Jorge Vásquez</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-body">
+      <!-- 1. DASHBOARD VIEW -->
+      <section id="view-dashboard" class="view-section active">
+        <div class="kpi-grid">
+          <div class="kpi-card blue">
+            <div class="kpi-title">Flota Total</div>
+            <div class="kpi-value" id="kpi-total">0</div>
+            <div class="kpi-sub">Unidades en inventario</div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-title">Disponibles</div>
+            <div class="kpi-value" id="kpi-disponibles" style="color: var(--success);">0</div>
+            <div class="kpi-sub">Listas para renta inmediata</div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-title">Alquiladas</div>
+            <div class="kpi-value" id="kpi-alquilados" style="color: var(--warning);">0</div>
+            <div class="kpi-sub">En contrato vigente</div>
+          </div>
+          <div class="kpi-card purple">
+            <div class="kpi-title">Facturación Total</div>
+            <div class="kpi-value" id="kpi-facturado" style="font-size: 1.55rem; color: #a78bfa;">RD$ 0.00</div>
+            <div class="kpi-sub">Incluye ITBIS 18% (DGII)</div>
+          </div>
+          <div class="kpi-card" style="border-left: 4px solid var(--danger);">
+            <div class="kpi-title">En Taller</div>
+            <div class="kpi-value" id="kpi-mantenimiento" style="color: var(--danger);">0</div>
+            <div class="kpi-sub">Mantenimiento preventivo</div>
+          </div>
+        </div>
+
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px;">
+          <h3 style="margin-bottom: 16px;">Accesos Rápidos del Sistema</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+            Bienvenido al sistema de control operativo de AutoDrive. Utilice el menú lateral para consultar la disponibilidad de flota, crear nuevos contratos de arrendamiento, realizar check-in e inspección de retorno, y emitir comprobantes fiscales válidos para la DGII.
+          </p>
+          <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="document.querySelector('[data-view=view-fleet]').click()">Ver Catálogo de Flota</button>
+            <button class="btn btn-secondary" onclick="document.querySelector('[data-view=view-contracts]').click()">Ver Contratos Activos</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. FLEET VIEW -->
+      <section id="view-fleet" class="view-section">
+        <div class="filter-bar">
+          <div class="filter-group">
+            <input type="text" id="fleet-search" class="search-input" placeholder="Buscar por marca, modelo o placa...">
+            <select id="filter-category" class="select-filter">
+              <option value="all">Todas las Categorías</option>
+              <option value="Compacto Económico">Compacto Económico</option>
+              <option value="Sedán Confort">Sedán Confort</option>
+              <option value="SUV Premium">SUV Premium</option>
+              <option value="Camioneta / Pickup 4x4">Camioneta / Pickup 4x4</option>
+            </select>
+            <select id="filter-status" class="select-filter">
+              <option value="all">Todos los Estados</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Alquilado">Alquilado</option>
+              <option value="Mantenimiento">Mantenimiento</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fleet-grid" id="fleet-container">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </section>
+
+      <!-- 3. CONTRACTS VIEW -->
+      <section id="view-contracts" class="view-section">
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>No. Contrato</th>
+                <th>Cliente</th>
+                <th>Vehículo</th>
+                <th>Período</th>
+                <th>Total (RD$)</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="contracts-tbody">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. CLIENTS VIEW -->
+      <section id="view-clients" class="view-section">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 18px;">
+          <button class="btn btn-primary" onclick="openModal('modal-client')">+ Nuevo Cliente</button>
+        </div>
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Nombre Completo</th>
+                <th>Identificación</th>
+                <th>No. Licencia</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
+              </tr>
+            </thead>
+            <tbody id="clients-tbody">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: GENERATE CONTRACT -->
+  <div class="modal-overlay" id="modal-contract">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="modal-vehicle-desc">Generar Contrato de Renta</h3>
+        <button class="btn-close" onclick="closeModal('modal-contract')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Cliente Titular</label>
+            <select id="contract-client" class="form-control">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Salida</label>
+            <input type="date" id="contract-start" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Fecha Estimada de Retorno</label>
+            <input type="date" id="contract-end" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Tarifa Diaria Base (RD$)</label>
+            <input type="number" id="contract-rate" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Póliza de Seguro</label>
+            <select id="contract-insurance" class="form-control">
+              <option value="450">Básico Obligatorio (+RD$ 450/día)</option>
+              <option value="950" selected>Full Cobertura (+RD$ 950/día)</option>
+              <option value="1400">Protección Total Cero Deducible (+RD$ 1,400/día)</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Opciones Adicionales</label>
+            <div style="display: flex; gap: 16px; margin-top: 6px; flex-wrap: wrap;">
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="extra-gps"> GPS Garmin (+RD$ 250/d)
+              </label>
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="extra-seat"> Silla Bebé (+RD$ 200/d)
+              </label>
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="extra-driver"> Conductor Adicional (+RD$ 350/d)
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-breakdown">
+          <div class="quote-line"><span>Duración Estimada:</span><span id="quote-days">0 días</span></div>
+          <div class="quote-line"><span>Monto Base Alquiler:</span><span id="quote-base">RD$ 0.00</span></div>
+          <div class="quote-line"><span>Costo Cobertura Seguro:</span><span id="quote-insurance">RD$ 0.00</span></div>
+          <div class="quote-line"><span>Accesorios y Adicionales:</span><span id="quote-extras">RD$ 0.00</span></div>
+          <div class="quote-line"><span>Subtotal Neto:</span><span id="quote-subtotal">RD$ 0.00</span></div>
+          <div class="quote-line"><span>ITBIS Facturado (18%):</span><span id="quote-itbis">RD$ 0.00</span></div>
+          <div class="quote-line total"><span>Total Contrato:</span><span id="quote-total">RD$ 0.00</span></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-contract')">Cancelar</button>
+        <button class="btn btn-primary" onclick="submitContract()">Emitir Contrato y Factura</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RETURN INSPECTION -->
+  <div class="modal-overlay" id="modal-return">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Inspección y Retorno de Unidad</h3>
+        <button class="btn-close" onclick="closeModal('modal-return')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(6, 182, 212, 0.08); padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 18px;">
+          <div style="font-weight: bold; color: var(--accent-cyan);" id="return-vehicle-desc"></div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">Contrato: <span id="return-contract-num"></span></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Kilometraje Final de Retorno</label>
+            <input type="number" id="return-km" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Nivel de Combustible</label>
+            <select id="return-fuel" class="form-control">
+              <option value="Full">Full (Completo)</option>
+              <option value="3/4">3/4 Tanque</option>
+              <option value="1/2">1/2 Tanque</option>
+              <option value="1/4">1/4 Tanque</option>
+              <option value="Reserva">Reserva</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Checklist de Recepción</label>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked id="chk-clean"> Limpieza interior y exterior conforme
+              </label>
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" checked id="chk-tools"> Rueda de repuesto y herramientas completas
+              </label>
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="chk-damages"> Sin nuevos golpes, abolladuras o rayones
+              </label>
+              <label style="font-weight: normal; display: flex; align-items: center; gap: 8px; color: var(--warning);">
+                <input type="checkbox" id="return-maintenance"> Enviar a Taller de Mantenimiento / Revisión
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-return')">Cancelar</button>
+        <button class="btn btn-success" onclick="submitReturnInspection()">Finalizar Inspección y Liberar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW CLIENT -->
+  <div class="modal-overlay" id="modal-client">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Registrar Nuevo Cliente</h3>
+        <button class="btn-close" onclick="closeModal('modal-client')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nombre y Apellidos *</label>
+            <input type="text" id="client-name" class="form-control" placeholder="Ej. Carlos Martínez Peña">
+          </div>
+          <div class="form-group">
+            <label>Tipo de Documento</label>
+            <select id="client-doctype" class="form-control">
+              <option value="Cédula">Cédula Dominicana</option>
+              <option value="Pasaporte">Pasaporte Extranjero</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Número de Identificación *</label>
+            <input type="text" id="client-docnumber" class="form-control" placeholder="Ej. 001-XXXXXXX-X">
+          </div>
+          <div class="form-group">
+            <label>No. de Licencia de Conducir *</label>
+            <input type="text" id="client-license" class="form-control" placeholder="Ej. LIC-1029384">
+          </div>
+          <div class="form-group">
+            <label>Fecha Vencimiento Licencia</label>
+            <input type="date" id="client-licenseexp" class="form-control" value="2028-12-31">
+          </div>
+          <div class="form-group">
+            <label>Teléfono de Contacto</label>
+            <input type="tel" id="client-phone" class="form-control" placeholder="Ej. 809-555-0199">
+          </div>
+          <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" id="client-email" class="form-control" placeholder="cliente@correo.com">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-client')">Cancelar</button>
+        <button class="btn btn-primary" onclick="submitNewClient()">Guardar Cliente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PRINTABLE INVOICE -->
+  <div class="modal-overlay" id="modal-invoice">
+    <div class="modal-window" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3>Comprobante Fiscal / Factura</h3>
+        <button class="btn-close" onclick="closeModal('modal-invoice')">&times;</button>
+      </div>
+      <div class="modal-body" id="invoice-modal-body">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-invoice')">Cerrar</button>
+        <button class="btn btn-primary" onclick="window.print()">Imprimir Factura</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
